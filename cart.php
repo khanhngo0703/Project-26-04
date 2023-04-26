@@ -1,0 +1,76 @@
+<?php
+
+include "shared/_header.php";
+require_once 'admin/utils.php';
+
+?>
+
+<div>
+    <div class="title-cart">
+        <div>CART</div>
+    </div>
+    <table>
+        <tr class="tieude">
+            <th>STT</th>
+            <th>IMAGE</th>
+            <th>NAME</th>
+            <th>QUANTITY</th>
+            <th>UNIT PRICE</th>
+            <th>INTO MONEY</th>
+            <th>ACT</th>
+        </tr>
+        <?php
+
+        if (isset($_SESSION['cart'])) {
+            $i = 0;
+            $total_money = 0;
+            foreach ($_SESSION['cart'] as $cart) {
+                $money = $cart['num'] * $cart['price'];
+                $total_money += $money;
+                $i++;
+        ?>
+                <tr class="tieude">
+                    <td><?php echo $i; ?></td>
+                    <td>
+                        <img class="picture" src="admin/uploads/<?php echo $cart['thumbnail']; ?>" alt="">
+                    </td>
+                    <td><?php echo $cart['product_name']; ?></td>
+                    <td><?php echo $cart['num']; ?></td>
+                    <td><?php echo number_format($cart['price'], 0, ',', '.') . 'đ'; ?></td>
+                    <td><?php echo number_format($money, 0, ',', '.') . 'đ'; ?></td>
+                    <td>
+                        <div class="col-md-3">
+                            <div class="header_right">
+                                <div class="header_right_auth">
+                                    <a href="addcart.php?xoa=<?php echo $cart['id']; ?>"><button class="btn btn-warning">Delete</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            <?php
+            }
+            ?>
+            <tr>
+                <td colspan="7">
+                    <p>Total Money: <?php echo number_format($total_money, 0, ',', '.') . 'đ'; ?></p>
+                    <a style="float: right;" class="btn btn-warning" href="addcart.php?xoaall=1">Delete all</a>
+                </td>
+            </tr>
+        <?php
+        } else {
+        ?>
+            <tr>
+                <td>
+                    <p>Gio hang trong!</p>
+                </td>
+            </tr>
+        <?php
+        }
+        ?>
+    </table>
+</div>
+
+<?php
+include "shared/_footer-contact.php";
+?>
